@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Color selector</title>
+        <style>
+            div {
+                text-align: center;
+            }
+            input {
+                height: 10rem;
+                width: 10rem;
+            }
+        </style>
+    </head>
+    <body>
+        <div>
+            <input type="color", id="selected-color"/>
+        </div>
+        <div>
+            <h1 id="selected-color-rgb-repr"></h1>
+            <h1 id="selected-color-ryb-repr"></h1>
+        </div>
+        <script type="text/javascript">
+            function rgb2ryb(rgb) {
+                let r = rgb.r,
+                    g = rgb.g,
+                    b = rgb.b;
+                // Remove the whiteness from the color.
+                var w = Math.min(r, g, b);
+                r -= w;
+                g -= w;
+                b -= w;
+
+                var mg = Math.max(r, g, b);
+
+                // Get the yellow out of the red+green.
+                var y = Math.min(r, g);
+                r -= y;
+                g -= y;
+
+                // If this unfortunate conversion combines blue and green, then cut each in
+                // half to preserve the value's maximum range.
+                if (b && g) {
+                    b /= 2.0;
+                    g /= 2.0;
+                }
+
+                // Redistribute the remaining green.
+                y += g;
+                b += g;
+
+                // Normalize to values.
+                var my = Math.max(r, y, b);
+                if (my) {
+                    var n = mg / my;
+                    r *= n;
+                    y *= n;
+                    b *= n;
+                }
+
+                // Add the white back in.
+                r += w;
+                y += w;
+                b += w;
+
+                // And return back the ryb typed accordingly.
+                return {"r": r, "y": y, "b": b};
+            }
+
+            function hexToRgb(hex) {
+                var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+                return result ? {
+                    r: parseInt(result[1], 16),
+                    g: parseInt(result[2], 16),
+                    b: parseInt(result[3], 16)
+                } : null;
+            }
+
+            function onColorChanged(event) {
+                let colorPicker = event.target;
+                let rgb = hexToRgb(colorPicker.value);
+                let colorRGBRepr = document.getElementById('selected-color-rgb-repr');
+                colorRGBRepr.innerText = "R: " + rgb.r + " | G: " + rgb.g + " | B: " + rgb.b;
+                let ryb = rgb2ryb(rgb);
+                let colorRYBRepr = document.getElementById('selected-color-ryb-repr');
+                colorRYBRepr.innerText = "R: " + ryb.r + " | Y: " + ryb.y + " | B: " + ryb.b;
+            }
+            let colorPicker = document.getElementById('selected-color');
+            colorPicker.addEventListener("change", onColorChanged);
+        </script>
+    </body>
+</html>

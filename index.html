@@ -15,13 +15,14 @@
     </head>
     <body>
         <div>
-            <input type="color", id="selected-color"/>
+            <input type="color", id="color-picker"/>
         </div>
         <div>
             <h1 id="selected-color-rgb-repr"></h1>
             <h1 id="selected-color-ryb-repr"></h1>
         </div>
         <script type="text/javascript">
+            // https://github.com/bahamas10/node-rgb2ryb/blob/master/rgb2ryb.js
             function rgb2ryb(rgb) {
                 let r = rgb.r,
                     g = rgb.g,
@@ -68,6 +69,7 @@
                 return {"r": r, "y": y, "b": b};
             }
 
+            // https://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb
             function hexToRgb(hex) {
                 var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
                 return result ? {
@@ -77,17 +79,18 @@
                 } : null;
             }
 
-            function onColorChanged(event) {
-                let colorPicker = event.target;
+            function onColorChanged() {
+                let colorPicker = document.getElementById('color-picker');
                 let rgb = hexToRgb(colorPicker.value);
-                let colorRGBRepr = document.getElementById('selected-color-rgb-repr');
-                colorRGBRepr.innerText = "R: " + rgb.r + " | G: " + rgb.g + " | B: " + rgb.b;
+                // let colorRGBRepr = document.getElementById('selected-color-rgb-repr');
+                // colorRGBRepr.innerText = "R: " + rgb.r + " | G: " + rgb.g + " | B: " + rgb.b;
                 let ryb = rgb2ryb(rgb);
                 let colorRYBRepr = document.getElementById('selected-color-ryb-repr');
                 colorRYBRepr.innerText = "R: " + ryb.r + " | Y: " + ryb.y + " | B: " + ryb.b;
             }
-            let colorPicker = document.getElementById('selected-color');
+            let colorPicker = document.getElementById('color-picker');
             colorPicker.addEventListener("change", onColorChanged);
+            onColorChanged()
         </script>
     </body>
 </html>

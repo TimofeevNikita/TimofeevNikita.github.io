@@ -86,7 +86,13 @@
                 // colorRGBRepr.innerText = "R: " + rgb.r + " | G: " + rgb.g + " | B: " + rgb.b;
                 let ryb = rgb2ryb(rgb);
                 let colorRYBRepr = document.getElementById('selected-color-ryb-repr');
-                colorRYBRepr.innerText = "R: " + ryb.r + " | Y: " + ryb.y + " | B: " + ryb.b;
+                console.log("RYB ", ryb);
+                console.log("RGB ", rgb);
+                let color_sum = ryb.r + ryb.y + ryb.b;
+                let r_percent = color_sum ? Math.floor((ryb.r / color_sum * 100) * 100) / 100 : 0,
+                    y_percent = color_sum ? Math.floor((ryb.y / color_sum * 100) * 100) / 100 : 0,
+                    b_percent = color_sum ? Math.floor((ryb.b / color_sum * 100) * 100) / 100 : 0;
+                colorRYBRepr.innerText = "R: " + r_percent + "% | Y: " + y_percent + "% | B: " + b_percent + "%";
             }
             let colorPicker = document.getElementById('color-picker');
             colorPicker.addEventListener("change", onColorChanged);

@@ -4,17 +4,24 @@
         <meta charset="utf-8">
         <title>Color selector</title>
         <style>
+            body, html {
+                height: 100%;
+            }
             div {
                 text-align: center;
             }
             input {
-                height: 10rem;
-                width: 10rem;
+                height: 100%;
+                width: 50%;
+            }
+            #color-picker-container {
+                height: 50%;
+                padding-top: 20%;
             }
         </style>
     </head>
     <body>
-        <div>
+        <div id="color-picker-container">
             <input type="color", id="color-picker"/>
         </div>
         <div>
